@@ -18,9 +18,12 @@
   "homepage": "https://github.com/Kishoripathrabe/ShoppingStopBackend#readme",
   "dependencies": {
     "@types/express": "^4.17.21",
+    "@types/mongoose": "^5.11.97",
     "@types/node": "^20.10.6",
     "@types/nodemon": "^1.19.6",
+    "body-parser": "^1.20.2",
     "express": "^4.18.2",
+    "mongoose": "^8.0.3",
     "node": "^21.2.0",
     "nodemon": "^3.0.2",
     "ts-node": "^10.9.2",
