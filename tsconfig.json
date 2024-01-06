@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+      "target": "es2020",
+      "module": "commonjs",
+      "outDir": "dist",
+      "sourceMap": false,
+      "declaration": true,
+      "lib": [
+        "es2020",
+        "dom"
+      ]
+    },
+    "files": [
+      "./node_modules/@types/node/index.d.ts"
+    ],
+    "include": [
+      "src/**/*.ts",
+      "package.json"
+    ],
+    "exclude": [
+      "node_modules"
+    ]
+  }
