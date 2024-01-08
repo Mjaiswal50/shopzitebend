@@ -35,10 +35,16 @@ export class UserController {
             );
             res.send({ token, type:user.type, msg: "Logged in Successfully", statusCode: "200" });
           }else{
-            res.send({ msg: "Error: Wrong Password", statusCode: "500" });
-          }
+            return res.status(500).json({
+                msg: "Error: Wrong Password",
+                status_code: "500"
+            })
+            }
     } else {
-        res.send({ msg: "Error: User Not Found", statusCode: "500" });
+        return res.status(500).json({
+            msg: "Error: User Not Found",
+            status_code: "500"
+        })
     }
   }
 
