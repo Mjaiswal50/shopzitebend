@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import { getEnvironmentVariable } from './environment/environment';
 import UserRouter from './routers/UserRouter';
 import * as cors from 'cors';
+import AdminRouter from './routers/AdminRouter';
 
 
 export class Server {
@@ -36,6 +37,8 @@ export class Server {
 
     setRoutes(){
         this.app.use('/api/user',UserRouter)
+        this.app.use('/api/admin',AdminRouter)
+
     }
     error404Handler(){
         this.app.use((req,res)=>{
