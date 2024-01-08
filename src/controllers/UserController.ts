@@ -33,7 +33,7 @@ export class UserController {
               },
               "secret"
             );
-            res.send({ token, msg: "Logged in Successfully", statusCode: "200" });
+            res.send({ token, type:user.type, msg: "Logged in Successfully", statusCode: "200" });
           }else{
             res.send({ msg: "Error: Wrong Password", statusCode: "500" });
           }
