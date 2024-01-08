@@ -20,7 +20,6 @@ export class UserRouter {
         this.router.post('/signup',UserController.signup)
     }
     getRoutes() {
-        this.router.get('/login',UserController.login)
     }
 }
 
