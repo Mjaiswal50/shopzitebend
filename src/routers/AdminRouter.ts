@@ -18,9 +18,11 @@ export class AdminRouter {
         
     }
     postRoutes() {
-        this.router.post('/addproduct',adminauth,AdminController.addproduct);
+        this.router.post('/add/product',adminauth,AdminController.addproduct);
     }
     getRoutes() {
+        this.router.get('/get/all/products',adminauth,AdminController.getAllProducts);
+
     }
 }
 

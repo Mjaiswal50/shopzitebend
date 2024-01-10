@@ -21,7 +21,9 @@ export const auth = (req, res, next) => {
 export const adminauth = (req, res, next) => {
     try {
        const token = req.headers.authorization ? req.headers.authorization.split(" ")[1] : null;
+        console.log("🚀 ~ file: middleware.ts:24 ~ adminauth ~ token:", token)
         jwt.verify(token, 'secret', (err, decoded) => {
+            console.log("🚀 ~ file: middleware.ts:26 ~ jwt.verify ~ decoded:", decoded)
             if (err) {
                 return res.status(401).json({
                     msg: 'Authentication failed',
