@@ -12,7 +12,7 @@ export class AdminRouter {
         this.deleteRoutes();
     }
     deleteRoutes() {
-        
+        this.router.delete('/delete/product/:id', adminauth, AdminController.deleteProduct);
     }
     patchRoutes() {
         

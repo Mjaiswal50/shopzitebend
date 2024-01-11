@@ -16,5 +16,19 @@ export class AdminController {
     Product.find({},{ __v: 0}).then(data =>{
       res.send(data);
     })
-}
+  }
+static  deleteProduct(req,res,next){
+  const productId = req.params.id;
+  console.log(productId);
+  Product.findOne({ _id : productId }).then(data =>{
+    if (!data) {
+      return res.json({ error: 'Product not found' });
+    }
+    return data.deleteOne();
+  }).then(() => {
+    res.json({ message: 'Product deleted successfully' });
+  }).catch(err => {
+    res.json({ error: err.message });
+  });
+  }
 }
