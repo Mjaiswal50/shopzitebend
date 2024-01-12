@@ -15,7 +15,7 @@ export class AdminRouter {
         this.router.delete('/delete/product/:id', adminauth, AdminController.deleteProduct);
     }
     patchRoutes() {
-        
+        this.router.patch('/edit/product',adminauth,AdminController.editProduct);
     }
     postRoutes() {
         this.router.post('/add/product',adminauth,AdminController.addproduct);

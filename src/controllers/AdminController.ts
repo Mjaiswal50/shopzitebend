@@ -17,6 +17,16 @@ export class AdminController {
       res.send(data);
     })
   }
+  
+  static editProduct(req,res,next){
+    let data = req.body.value;
+        Product.findOneAndUpdate({_id: data._id}, { $set: data }, {new: true}).exec().then((data) => {
+            res.status(200).send(data);
+        }).catch(err => {
+            res.status(500).send(err)
+        });
+}
+
 static  deleteProduct(req,res,next){
   const productId = req.params.id;
   console.log(productId);
