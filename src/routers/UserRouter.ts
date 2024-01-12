@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { UserController } from "../controllers/UserController";
+import { auth } from "../middleware";
 
 export class UserRouter {
     public router: Router ;
@@ -14,13 +15,15 @@ export class UserRouter {
         
     }
     patchRoutes() {
-        
+        this.router.patch('/add/wishlist',auth, UserController.addToWishlist);
+
     }
     postRoutes() {
         this.router.post('/signup',UserController.signup);
     }
     getRoutes() {
         this.router.get('/login',UserController.login);
+        this.router.get('/get/all/products',auth, UserController.getAllProducts);
 
     }
 }

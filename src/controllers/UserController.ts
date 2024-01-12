@@ -1,5 +1,6 @@
 import User from "../models/User";
 import * as jwt from "jsonwebtoken";
+import Product from "../models/Product";
 
 export class UserController {
   static signup(req, res) {
@@ -47,6 +48,40 @@ export class UserController {
             status_code: "500"
         })
     }
+  }
+  static getAllProducts(req,res,next){
+    Product.find({},{ __v: 0}).then(data =>{
+      res.send(data);
+    })
+  }
+  static addToWishlist(req,res,next) {
+    let userID = req.userData.userID;
+    let pid = req.body.pid;
+    User.find({ _id: userID }).then(async (data) => {
+      console.log(data);
+      let arr = data[0].wishlist;
+      let updatedData:any;
+      if (!arr.includes(pid)) {
+        updatedData = await User.findOneAndUpdate(
+          { _id: userID },
+          {
+            $push: { wishlist: pid },
+          },
+          { new: true }
+        );
+      }else{
+        updatedData = await User.findOneAndUpdate(
+            { _id: userID },
+            {
+              $pull: { wishlist: pid },
+            },
+            { new: true }
+          );
+        }
+        console.log(updatedData)
+        res.send({msg:"Added to Wishlist"})
+    });
+
   }
 
 
