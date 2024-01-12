@@ -24,6 +24,7 @@ export class UserRouter {
     getRoutes() {
         this.router.get('/login',UserController.login);
         this.router.get('/get/all/products',auth, UserController.getAllProducts);
+        this.router.get('/get/wishlist',auth, UserController.getWishlist);
 
     }
 }

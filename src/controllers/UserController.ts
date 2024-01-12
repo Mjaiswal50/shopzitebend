@@ -1,6 +1,7 @@
 import User from "../models/User";
 import * as jwt from "jsonwebtoken";
 import Product from "../models/Product";
+import product from "../models/Product";
 
 export class UserController {
   static signup(req, res) {
@@ -83,6 +84,32 @@ export class UserController {
     });
 
   }
+  static async getWishlist(req, res, next) {
+    try {
+        const userID = req.userData.userID;
+        const user = await User.findOne({ _id: userID });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const wishlistProductIds = user.wishlist;
+
+        // Use Promise.all to wait for all product queries to complete
+        const Products = await Promise.all(
+            wishlistProductIds.map(async (productId) => {
+                const singleProduct = await Product.findOne({ _id: productId });
+                return singleProduct;
+            })
+        );
+
+        console.log(Products);
+        res.json(Products);
+    } catch (error) {
+        console.error('Error fetching wishlist:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
 
 
 }
