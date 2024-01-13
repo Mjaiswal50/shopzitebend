@@ -20,7 +20,7 @@ export class UserController {
     // Update the user's cart reference with the new cart's ObjectId using findOneAndUpdate
     await User.findOneAndUpdate(
       { _id: newUser._id },
-      { $set: { cart: newCart._id }}
+      { $set: { cart: newCart._id } }
     );
     return res.send(newUser);
   }
@@ -68,16 +68,16 @@ export class UserController {
           const user = await User.findOne({ _id: userID });
 
           // wishlist
-          let wishlistProductIds = user.wishlist.map(data=>data.toString());
-          if (wishlistProductIds.includes((prod._id).toString())) {
+          let wishlistProductIds = user.wishlist.map((data) => data.toString());
+          if (wishlistProductIds.includes(prod._id.toString())) {
             prod.inWishlist = true;
           }
           // cart
-          let cartProducts = await Cart.findOne({ _id: user.cart }) 
-          let cartIdsArr = cartProducts.products.map(data => {
+          let cartProducts = await Cart.findOne({ _id: user.cart });
+          let cartIdsArr = cartProducts.products.map((data) => {
             return data.productId.toString();
-          })
-          if (cartIdsArr.includes((prod._id).toString())) {
+          });
+          if (cartIdsArr.includes(prod._id.toString())) {
             prod.inCart = true;
           }
           return prod; // Return the modified product
@@ -158,14 +158,14 @@ export class UserController {
     let prodId = req.body.pid;
     let userID = req.userData.userID;
     let updatedCart: any;
-  
+
     User.find({ _id: userID }).then(async (data) => {
       let cartId = data[0].cart;
       let incartalready = false;
       let orgCart = await Cart.findOne({ _id: cartId });
-      let pidArr = orgCart.products.map(data => data.productId.toString());
+      let pidArr = orgCart.products.map((data) => data.productId.toString());
       if (pidArr.includes(prodId.toString())) {
-        incartalready = true
+        incartalready = true;
         res.send({ msg: "Product Already in cart ", incartalready });
       } else {
         let item = { productId: prodId, quantity: 1 };
@@ -174,8 +174,32 @@ export class UserController {
           { $push: { products: item } },
           { new: true }
         );
-        res.send({ msg: "Product is added to your cart" , incartalready});
+        res.send({ msg: "Product is added to your cart", incartalready });
       }
+    });
+  }
+  static getCartProducts(req, res, next) {
+    let userID = req.userData.userID;
+    let updatedCart: any = [];
+    User.findOne({ _id: userID }).then(async (userData) => {
+      let cartId = userData.cart;
+      let orgCart = await Cart.findOne({ _id: cartId });
+      let oldproducts = orgCart.products;
+      let newproducts = await Promise.all(
+        oldproducts.map(async (oldp) => {
+          let prodId = oldp.productId;
+          let prodQ = oldp.quantity;
+          let productdetails = await Product.findOne({ _id: prodId });
+          let newObj = {
+            _id: prodId,
+            quantity: prodQ,
+            orgProduct: productdetails,
+          };
+          return newObj;
+        })
+      );
+      console.log("newproducts", newproducts);
+      res.send
     });
   }
 }
