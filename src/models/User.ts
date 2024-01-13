@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
     last_name : {type: String, required: true},
     orders: [{ type: mongoose.Types.ObjectId, ref: 'order'}],
     cart: [{ type: mongoose.Types.ObjectId, ref: 'cart' }],
-    wishlist: [{ type: mongoose.Types.ObjectId, ref: 'wishlist' }],
+    wishlist: [{ type: mongoose.Types.ObjectId, ref: 'product' }],
     type: { type: String ,default:"customer"}
 })   
 

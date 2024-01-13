@@ -51,36 +51,54 @@ export class UserController {
     }
   }
   static getAllProducts(req,res,next){
-    Product.find({},{ __v: 0}).then(data =>{
-      res.send(data);
+    Product.find({}, { __v: 0 })
+    .then(async (data: any) => {
+      // Create an array of promises for each product
+      const promises = data.map(async (prod: any) => {
+        const userID = req.userData.userID;
+        const user = await User.findOne({ _id: userID });
+        let wishlistProductIds = user.wishlist;
+        if (wishlistProductIds.includes(prod._id)) {
+          prod.inWishlist = true;
+        }
+
+        return prod; // Return the modified product
+      });
+
+      // Wait for all promises to resolve before sending the response
+      Promise.all(promises)
+        .then((modifiedData) => {
+          res.send(modifiedData);
+        })
+        .catch((error) => {
+          console.error("Error processing promises:", error);
+          res.status(500).send({ error: "Internal Server Error" });
+        });
     })
+    .catch((error) => {
+      console.error("Error fetching products:", error);
+      res.status(500).send({ error: "Internal Server Error" });
+    });
   }
+
   static addToWishlist(req,res,next) {
     let userID = req.userData.userID;
     let pid = req.body.pid;
+    let isAdded=true;
+    let updatedData:any;
     User.find({ _id: userID }).then(async (data) => {
-      console.log(data);
       let arr = data[0].wishlist;
-      let updatedData:any;
       if (!arr.includes(pid)) {
-        updatedData = await User.findOneAndUpdate(
-          { _id: userID },
-          {
-            $push: { wishlist: pid },
-          },
-          { new: true }
-        );
-      }else{
-        updatedData = await User.findOneAndUpdate(
-            { _id: userID },
-            {
-              $pull: { wishlist: pid },
-            },
-            { new: true }
-          );
+        isAdded=true;
+        updatedData = await User.findOneAndUpdate({ _id: userID },{$push: { wishlist: pid }},
+          { new: true });
+      } else {
+        isAdded=false;
+        updatedData = await User.findOneAndUpdate({ _id: userID },{$pull: { wishlist: pid }},
+            { new: true });
         }
-        console.log(updatedData)
-        res.send({msg:"Added to Wishlist"})
+        let frontendData = {msg:isAdded?"Added to Wishlist":"Removed from wishlist",isAdded}
+        res.send(frontendData);
     });
 
   }
@@ -103,7 +121,6 @@ export class UserController {
             })
         );
 
-        console.log(Products);
         res.json(Products);
     } catch (error) {
         console.error('Error fetching wishlist:', error);

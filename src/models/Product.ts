@@ -7,7 +7,8 @@ const productSchema = new mongoose.Schema({
     },
     desc: {type: String, required: true},
     price: {type: Number, required: true},
-    picUrl : {type: String, required: true,default:"https://reqres.in/img/faces/1-image.jpg"}
+    picUrl : {type: String, required: true,default:"https://reqres.in/img/faces/1-image.jpg"},
+    inWishlist : {type: Boolean, required: false ,default: false}
 })   
 
 const product = mongoose.model('product', productSchema);
