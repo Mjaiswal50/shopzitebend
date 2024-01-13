@@ -3,6 +3,7 @@ import * as jwt from "jsonwebtoken";
 import Product from "../models/Product";
 import product from "../models/Product";
 import Cart from "../models/Cart";
+import mongoose from "mongoose";
 
 export class UserController {
   static async signup(req, res) {
@@ -65,11 +66,20 @@ export class UserController {
         const promises = data.map(async (prod: any) => {
           const userID = req.userData.userID;
           const user = await User.findOne({ _id: userID });
-          let wishlistProductIds = user.wishlist;
-          if (wishlistProductIds.includes(prod._id)) {
+
+          // wishlist
+          let wishlistProductIds = user.wishlist.map(data=>data.toString());
+          if (wishlistProductIds.includes((prod._id).toString())) {
             prod.inWishlist = true;
           }
-
+          // cart
+          let cartProducts = await Cart.findOne({ _id: user.cart }) 
+          let cartIdsArr = cartProducts.products.map(data => {
+            return data.productId.toString();
+          })
+          if (cartIdsArr.includes((prod._id).toString())) {
+            prod.inCart = true;
+          }
           return prod; // Return the modified product
         });
 
@@ -142,5 +152,30 @@ export class UserController {
       console.error("Error fetching wishlist:", error);
       res.status(500).json({ error: "Internal Server Error" });
     }
+  }
+
+  static addToCart(req, res, next) {
+    let prodId = req.body.pid;
+    let userID = req.userData.userID;
+    let updatedCart: any;
+  
+    User.find({ _id: userID }).then(async (data) => {
+      let cartId = data[0].cart;
+      let incartalready = false;
+      let orgCart = await Cart.findOne({ _id: cartId });
+      let pidArr = orgCart.products.map(data => data.productId.toString());
+      if (pidArr.includes(prodId.toString())) {
+        incartalready = true
+        res.send({ msg: "Product Already in cart ", incartalready });
+      } else {
+        let item = { productId: prodId, quantity: 1 };
+        updatedCart = await Cart.findOneAndUpdate(
+          { _id: cartId },
+          { $push: { products: item } },
+          { new: true }
+        );
+        res.send({ msg: "Product is added to your cart" , incartalready});
+      }
+    });
   }
 }
