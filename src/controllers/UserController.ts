@@ -199,7 +199,73 @@ export class UserController {
         })
       );
       console.log("newproducts", newproducts);
-      res.send
+      res.send(newproducts);
     });
+  }
+  static decreaseQuantity(req,res,next) {
+    let productId = req.body.prodId;
+    let userID = req.userData.userID;
+    User.findOne({_id : userID}).then(async (userData) =>{
+      let cartId = userData.cart;
+      let orgCart = await Cart.findOne({ _id: cartId });
+
+      let oldproducts = orgCart.products;
+      let newproducts=await Promise.all(oldproducts.map(prod=>{
+        if(prod.productId.toString()==productId.toString()){
+            prod.quantity=prod.quantity-1;
+        }
+        return prod
+      }))
+      await Cart.findOneAndUpdate({ _id: cartId},{$set:{products:newproducts}},{new:true});
+      res.send({msg:"done"});
+    })
+  }
+  static increaseQuantity(req,res,next) {
+    let productId = req.body.prodId;
+    let userID = req.userData.userID;
+    User.findOne({_id : userID}).then(async (userData) =>{
+      let cartId = userData.cart;
+      let orgCart = await Cart.findOne({ _id: cartId });
+
+      let oldproducts = orgCart.products;
+      let newproducts=await Promise.all(oldproducts.map(prod=>{
+        if(prod.productId.toString()==productId.toString()){
+            prod.quantity=prod.quantity+1;
+        }
+        return prod
+      }))
+      await Cart.findOneAndUpdate({ _id: cartId},{$set:{products:newproducts}},{new:true});
+      // let singleOldProd=oldproducts.filter(data=>{
+      //     return data.productId==productId
+      // })[0]
+      // await Cart.findOneAndUpdate({_id: cartId}, {$pull : {products : singleOldProd}}, { new: true})
+      // singleOldProd.quantity +=1;
+      // await Cart.findOneAndUpdate({_id: cartId}, {$push : {products : singleOldProd}}, { new: true})
+
+      res.send({msg:"done"});
+    })
+  }
+
+  static deleteFromCart(req,res,next) {
+    let productId = req.body.prodId;
+    let userID = req.userData.userID;
+    User.findOne({_id : userID}).then(async (userData) =>{
+      let cartId = userData.cart;
+      let orgCart = await Cart.findOne({ _id: cartId });
+
+      let oldproducts = orgCart.products;
+      let newproducts=await Promise.all(oldproducts.filter(prod=>{
+       return (prod.productId.toString()!=productId.toString())
+      }))
+      await Cart.findOneAndUpdate({ _id: cartId},{$set:{products:newproducts}},{new:true});
+      // let singleOldProd=oldproducts.filter(data=>{
+      //     return data.productId==productId
+      // })[0]
+      // await Cart.findOneAndUpdate({_id: cartId}, {$pull : {products : singleOldProd}}, { new: true})
+      // singleOldProd.quantity +=1;
+      // await Cart.findOneAndUpdate({_id: cartId}, {$push : {products : singleOldProd}}, { new: true})
+
+      res.send({msg:"done"});
+    })
   }
 }

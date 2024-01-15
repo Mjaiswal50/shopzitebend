@@ -17,6 +17,10 @@ export class UserRouter {
     patchRoutes() {
         this.router.patch('/add/wishlist',auth, UserController.addToWishlist);
         this.router.patch('/add/tocart',auth, UserController.addToCart);
+        this.router.patch('/decrease/product/quantity',auth, UserController.decreaseQuantity);
+        this.router.patch('/increase/product/quantity',auth, UserController.increaseQuantity);
+        this.router.patch('/delete/product/cart',auth, UserController.deleteFromCart);
+
     }
     postRoutes() {
         this.router.post('/signup',UserController.signup);
