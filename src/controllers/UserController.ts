@@ -282,4 +282,14 @@ export class UserController {
       res.send({msg:"done"});
     })
   }
+
+  static async fetchMe(req,res,next){
+    let user=await User.findOne({_id:req.userData.userID})
+    res.send(user);
+  }
+  static async updateMe(req,res,next){
+    let updatedData = req.body.updatedMe;
+    let user = await User.findOneAndUpdate({_id:req.userData.userID},{$set : updatedData},{new:true});
+    res.send(user);
+  }
 }

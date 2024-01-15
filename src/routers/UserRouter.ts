@@ -20,7 +20,7 @@ export class UserRouter {
         this.router.patch('/decrease/product/quantity',auth, UserController.decreaseQuantity);
         this.router.patch('/increase/product/quantity',auth, UserController.increaseQuantity);
         this.router.patch('/delete/product/cart',auth, UserController.deleteFromCart);
-
+        this.router.patch('/update/me',auth,UserController.updateMe)
     }
     postRoutes() {
         this.router.post('/signup',UserController.signup);
@@ -30,6 +30,7 @@ export class UserRouter {
         this.router.get('/get/all/products',auth, UserController.getAllProducts);
         this.router.get('/get/wishlist',auth, UserController.getWishlist);
         this.router.get('/get/cart/products',auth, UserController.getCartProducts);
+        this.router.get('/get/fetchme',auth,UserController.fetchMe)
     }
 }
 
