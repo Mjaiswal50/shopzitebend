@@ -140,12 +140,26 @@ export class UserController {
       const wishlistProductIds = user.wishlist;
 
       // Use Promise.all to wait for all product queries to complete
-      const Products = await Promise.all(
+      let Products = await Promise.all(
         wishlistProductIds.map(async (productId) => {
           const singleProduct = await Product.findOne({ _id: productId });
           return singleProduct;
         })
       );
+
+      const cartId = user.cart;
+
+      let cartData=await Cart.findOne({_id:cartId})
+      let cartArr=cartData.products;
+      let cartIdArr=cartArr.map((prod:any)=>{
+        return prod.productId.toString()
+      })
+      Products= await Promise.all(Products.map(data=>{
+        if(cartIdArr.includes(data._id.toString())){
+          data.inCart =true;
+        }
+        return data
+      }))
 
       res.json(Products);
     } catch (error) {
