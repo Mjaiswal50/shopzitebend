@@ -31,6 +31,8 @@ export class UserRouter {
         this.router.get('/get/wishlist',auth, UserController.getWishlist);
         this.router.get('/get/cart/products',auth, UserController.getCartProducts);
         this.router.get('/get/fetchme',auth,UserController.fetchMe)
+        this.router.get('/get/productbyid/:prodId',auth,UserController.getProductById);
+
     }
 }
 

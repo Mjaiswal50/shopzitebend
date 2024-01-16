@@ -1,7 +1,6 @@
 import User from "../models/User";
 import * as jwt from "jsonwebtoken";
 import Product from "../models/Product";
-import product from "../models/Product";
 import Cart from "../models/Cart";
 import mongoose from "mongoose";
 
@@ -291,5 +290,27 @@ export class UserController {
     let updatedData = req.body.updatedMe;
     let user = await User.findOneAndUpdate({_id:req.userData.userID},{$set : updatedData},{new:true});
     res.send(user);
+  }
+  static getProductById(req, res, next) {
+    let prodId = req.params.prodId;
+    let userID = req.userData.userID;
+    Product.findOne({ _id: prodId }).then(async (product) => {
+      let user = await User.findOne({ _id: userID });
+      let wishlistArr = user.wishlist;
+      wishlistArr.forEach((res: any) => {
+        if (res._id.toString() == prodId) {
+          product.inWishlist = true;
+        }
+      })
+      let cartId = user.cart;
+      let cart = await Cart.findOne({ _id: cartId });
+      let cartProducts = cart.products;
+      cartProducts.map((cproduct: any) => {
+        if (cproduct.productId.toString() == prodId) {
+          product.inCart = true;
+        }
+      });
+      res.send(product);
+    })
   }
 }
