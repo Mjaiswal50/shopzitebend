@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --exec ts-node src/index.ts "
+    "start": "nodemon --exec ts-node src/index.ts ",
+    "debugger": "npx node --inspect=0.0.0.0:5000 -r ts-node/register src/index.ts"
   },
   "repository": {
     "type": "git",
