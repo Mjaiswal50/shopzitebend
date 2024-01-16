@@ -1,0 +1,149 @@
+[{
+    "_id": {
+        "$oid": "659eef1375838e31d25ad8a5"
+    },
+    "name": "Traveler's Duffel Bag",
+    "desc": "Spacious duffel bag designed for travelers on the go.",
+    "price": {
+        "$numberInt": "130"
+    },
+    "picUrl": "https://media.istockphoto.com/id/1302787124/photo/beige-leather-women-handbag-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=fOO0zCBqF3rbiGLLHwgtOMHxt66adpKikE7Fs2C_fDs=",
+    "__v": {
+        "$numberInt": "0"
+    }
+},
+{
+    "_id": {
+        "$oid": "65a0f726bd61b2efa278a488"
+    },
+    "name": "Classic Messenger Bag",
+    "desc": "Classic Messenger Bag",
+    "price": {
+        "$numberInt": "30"
+    },
+    "picUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_yRnReFmp4rF6yeOsjnOOf-D1R_ZIFyfssg&usqp=CAU",
+    "__v": {
+        "$numberInt": "0"
+    }
+},
+{
+    "_id": {
+        "$oid": "65a0f7bbbd61b2efa278a48e"
+    },
+    "name": "Teal structured bag",
+    "desc": "Teal structured bag",
+    "price": {
+        "$numberInt": "40"
+    },
+    "picUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFXfpPbKYO8NOeYQW8lcq0_DB7zF1Y-SqNlAedG4DffojW9LBUxXW9spCLwkM9qq6lBJY&usqp=CAU",
+    "__v": {
+        "$numberInt": "0"
+    }
+},
+{
+    "_id": {
+        "$oid": "65a0f8dbbd61b2efa278a49d"
+    },
+    "name": "structured hand bag",
+    "desc": "structured hand bag",
+    "price": {
+        "$numberInt": "40"
+    },
+    "picUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTbzLW0xYYWy2k5F6qNxyJDoImt3j172LLXA&usqp=CAU",
+    "__v": {
+        "$numberInt": "0"
+    }
+},
+{
+    "_id": {
+        "$oid": "65a0f90fbd61b2efa278a4a0"
+    },
+    "name": "Classic Messenger Bag",
+    "desc": "Classic Messenger Bag",
+    "price": {
+        "$numberInt": "55"
+    },
+    "picUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTw_EVH6Y4LZO5cyqenirLsA91fpYS8sdPfdJcparTzfoEerGFhFw6lC26mx3L11GxUsuU&usqp=CAU",
+    "__v": {
+        "$numberInt": "0"
+    }
+},
+{
+    "_id": {
+        "$oid": "65a0f9cabd61b2efa278a4a6"
+    },
+    "name": "Straw Bag",
+    "desc": "Monkey D. LUffy",
+    "price": {
+        "$numberInt": "100"
+    },
+    "picUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlnK1wYKC5LlWEzOp8fhdzBzhiqGT3gPGJdg&usqp=CAU",
+    "__v": {
+        "$numberInt": "0"
+    }
+},
+{
+    "_id": {
+        "$oid": "65a2de77bb092d0a182d5a7b"
+    },
+    "name": "Crochet bag",
+    "desc": "Crochet bag",
+    "price": {
+        "$numberInt": "8"
+    },
+    "picUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkYYBzmJtbVYayDSof9dlknBVJ2fsI53wkQg&usqp=CAU",
+    "inWishlist": false,
+    "inCart": false,
+    "__v": {
+        "$numberInt": "0"
+    }
+},
+{
+    "_id": {
+        "$oid": "65a2deb1bb092d0a182d5a7e"
+    },
+    "name": "pink fancy bag",
+    "desc": "pink fancy bag",
+    "price": {
+        "$numberInt": "15"
+    },
+    "picUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnbMuc7gBUf0LSDHJ2bEvFwbCyr-4FiNaJoA&usqp=CAU",
+    "inWishlist": false,
+    "inCart": false,
+    "__v": {
+        "$numberInt": "0"
+    }
+},
+{
+    "_id": {
+        "$oid": "65a2dedebb092d0a182d5a81"
+    },
+    "name": "Classic Messenger Bag",
+    "desc": "Classic Messenger Bag",
+    "price": {
+        "$numberInt": "39"
+    },
+    "picUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYH2WmFi4nO-npbXmccolcRc8RIV_cjIIHug&usqp=CAU",
+    "inWishlist": false,
+    "inCart": false,
+    "__v": {
+        "$numberInt": "0"
+    }
+},
+{
+    "_id": {
+        "$oid": "65a58624d302093f9a5912c5"
+    },
+    "name": "Peal Bag",
+    "desc": "Pealing real structured bag",
+    "price": {
+        "$numberInt": "80"
+    },
+    "picUrl": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqyGP70Nuf-t2zJ8DN6ulzHR7uVikj8R_j3g&usqp=CAU",
+    "inWishlist": false,
+    "inCart": false,
+    "__v": {
+        "$numberInt": "0"
+    }
+}
+]
