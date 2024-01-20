@@ -21,9 +21,13 @@ export class UserRouter {
         this.router.patch('/increase/product/quantity',auth, UserController.increaseQuantity);
         this.router.patch('/delete/product/cart',auth, UserController.deleteFromCart);
         this.router.patch('/update/me',auth,UserController.updateMe)
+        this.router.patch('/edit/address', auth, UserController.editAddress);
+        this.router.patch('/delete/address', auth, UserController.deleteAddress)
+
     }
     postRoutes() {
         this.router.post('/signup',UserController.signup);
+        this.router.post('/create/address',auth,UserController.addAddress);
     }
     getRoutes() {
         this.router.get('/login',UserController.login);
@@ -32,6 +36,7 @@ export class UserRouter {
         this.router.get('/get/cart/products',auth, UserController.getCartProducts);
         this.router.get('/get/fetchme',auth,UserController.fetchMe)
         this.router.get('/get/productbyid/:prodId',auth,UserController.getProductById);
+        this.router.get('/get/address', auth,UserController.getAddresses );
 
     }
 }

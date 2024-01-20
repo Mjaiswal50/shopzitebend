@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
     orders: [{ type: mongoose.Types.ObjectId, ref: 'order'}],
     cart: { type: mongoose.Types.ObjectId, ref: 'cart' },
     wishlist: [{ type: mongoose.Types.ObjectId, ref: 'product' }],
+    address: [{ type: mongoose.Types.ObjectId, ref: 'add' }],
     type: { type: String ,default:"customer"}
 })   
 

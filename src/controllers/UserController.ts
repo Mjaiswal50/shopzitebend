@@ -2,7 +2,7 @@ import User from "../models/User";
 import * as jwt from "jsonwebtoken";
 import Product from "../models/Product";
 import Cart from "../models/Cart";
-import mongoose from "mongoose";
+import Address from "../models/Address";
 
 export class UserController {
   static async signup(req, res) {
@@ -312,5 +312,50 @@ export class UserController {
       });
       res.send(product);
     })
+  }
+
+  static async addAddress(req,res,next) {
+    let address = req.body.addressdetails;
+    delete address["_id"]
+    let userID = req.userData.userID;
+    const newAddress = new Address(address);
+    let newaddress = await newAddress.save();
+    // Update the user's cart reference with the new cart's ObjectId using findOneAndUpdate
+    await User.findOneAndUpdate(
+      { _id: userID},
+      { $push:{ address: newaddress._id} },
+      {new:true}
+    );
+    console.log("data getting", newAddress);
+    return res.send(newaddress);
+  }
+
+  static  getAddresses(req,res,next) {
+    let userID = req.userData.userID;
+    let addressId =[];
+    let addressArray: any ;
+    User.findOne({_id : userID}).then(async (userData:any) => {
+      let addressArr = userData.address;
+      addressArray = await Promise.all(addressArr.map(async (addressid) =>{
+        let singleAddress = await Address.findOne({ _id: addressid});
+        return (singleAddress);
+      }))
+      console.log("addressArray",addressArray);
+      res.send(addressArray);
+    })
+  }
+  static async editAddress(req, res,next) {
+    let userAddress = req.body.editUserAddress;
+    delete userAddress["isEditMode"];
+    let singleAddress = await Address.findOneAndUpdate({_id : userAddress._id},
+      {$set : userAddress},{new: true});
+      res.send(singleAddress);
+    }
+  static async deleteAddress(req,res,next){
+    let addId = req.body.addId;
+    let data = await Address.findOne({_id:addId})
+    data.deleteOne();
+    let user =  await User.findOneAndUpdate({_id:req.userData.userID},{$pull:{address:addId}},{new:true})
+    res.send({msg:"Deleted Successfully"})
   }
 }
