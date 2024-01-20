@@ -3,6 +3,7 @@ import * as jwt from "jsonwebtoken";
 import Product from "../models/Product";
 import Cart from "../models/Cart";
 import Address from "../models/Address";
+import Order from "../models/Order";
 
 export class UserController {
   static async signup(req, res) {
@@ -211,7 +212,6 @@ export class UserController {
           return newObj;
         })
       );
-      console.log("newproducts", newproducts);
       res.send(newproducts);
     });
   }
@@ -326,7 +326,6 @@ export class UserController {
       { $push:{ address: newaddress._id} },
       {new:true}
     );
-    console.log("data getting", newAddress);
     return res.send(newaddress);
   }
 
@@ -340,7 +339,6 @@ export class UserController {
         let singleAddress = await Address.findOne({ _id: addressid});
         return (singleAddress);
       }))
-      console.log("addressArray",addressArray);
       res.send(addressArray);
     })
   }
@@ -357,5 +355,23 @@ export class UserController {
     data.deleteOne();
     let user =  await User.findOneAndUpdate({_id:req.userData.userID},{$pull:{address:addId}},{new:true})
     res.send({msg:"Deleted Successfully"})
+  }
+  static async getAddressesById(req,res,next){
+    let addId = req.params.addId;
+    let selectedAddress = await Address.findOne({_id: addId});
+    res.send(selectedAddress);
+  }
+
+  static async placeOrder(req,res,next) {
+    let orderedObj = req.body.placedOrder;
+    const newOrder = new Order({
+      address: orderedObj.address,
+      cart: orderedObj.cart,
+      MOP: orderedObj.MOP
+    });
+    let order = await newOrder.save();
+    let updatedUser = await User.findOneAndUpdate({_id : req.userData.userID},{$push : {orders: order._id }},{new: true});
+    let updatedCart = await Cart.findOneAndUpdate({_id: updatedUser.cart},{$set : { products: []}},{new: true});
+    res.send({updatedUser,order,updatedCart});
   }
 }

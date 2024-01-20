@@ -1,12 +1,23 @@
 import * as mongoose from "mongoose";
 const orderSchema = new mongoose.Schema({
-    products: [
+    address: {
+          full_name: String,
+          phone_number: String,
+          address_line1: String,
+          address_line2: String,
+          city: String,
+          state: String,
+          pincode: String
+          },
+    cart: [
         {
-        productId: { type: mongoose.Types.ObjectId, ref: 'Product', required: true },
+        orgProduct: { type: Object },
         quantity: { type: Number, default: 1 },
       }
-    ]
-});
+    ],
+    MOP: String,
+    date: { type: Date, default: Date.now },
+  });
 
 const order = mongoose.model('order', orderSchema);
 export default order;

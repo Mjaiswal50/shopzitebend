@@ -28,6 +28,7 @@ export class UserRouter {
     postRoutes() {
         this.router.post('/signup',UserController.signup);
         this.router.post('/create/address',auth,UserController.addAddress);
+        this.router.post('/place/order',auth,UserController.placeOrder);
     }
     getRoutes() {
         this.router.get('/login',UserController.login);
@@ -37,7 +38,7 @@ export class UserRouter {
         this.router.get('/get/fetchme',auth,UserController.fetchMe)
         this.router.get('/get/productbyid/:prodId',auth,UserController.getProductById);
         this.router.get('/get/address', auth,UserController.getAddresses );
-
+        this.router.get('/get/addressbyid/:addId', auth,UserController.getAddressesById );
     }
 }
 
