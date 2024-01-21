@@ -374,4 +374,12 @@ export class UserController {
     let updatedCart = await Cart.findOneAndUpdate({_id: updatedUser.cart},{$set : { products: []}},{new: true});
     res.send({updatedUser,order,updatedCart});
   }
+  static async getOrders(req,res,next) {
+   let userID = await User.findOne({_id: req.userData.userID});
+   let orderIdsArr = await userID.orders;
+   let orderObjofArray = await Promise.all(orderIdsArr.map(async (orderId: any) =>{
+     return Order.findOne({_id: orderId});
+   }));
+   res.send(orderObjofArray); 
+  }
 }

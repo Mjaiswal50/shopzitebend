@@ -39,6 +39,7 @@ export class UserRouter {
         this.router.get('/get/productbyid/:prodId',auth,UserController.getProductById);
         this.router.get('/get/address', auth,UserController.getAddresses );
         this.router.get('/get/addressbyid/:addId', auth,UserController.getAddressesById );
+        this.router.get('/get/orderhistory', auth,UserController.getOrders );
     }
 }
 
