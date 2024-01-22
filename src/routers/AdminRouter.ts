@@ -16,13 +16,16 @@ export class AdminRouter {
     }
     patchRoutes() {
         this.router.patch('/edit/product',adminauth,AdminController.editProduct);
+        this.router.patch('/update/orderstatus',adminauth,AdminController.updateOrderStatus);
+
     }
     postRoutes() {
         this.router.post('/add/product',adminauth,AdminController.addproduct);
     }
     getRoutes() {
         this.router.get('/get/all/products',adminauth,AdminController.getAllProducts);
-
+        this.router.get('/get/customer/data', adminauth, AdminController.getCustomersData);
+        this.router.get('/get/customer/info/:userId', adminauth, AdminController.getCustomersInfo);
     }
 }
 

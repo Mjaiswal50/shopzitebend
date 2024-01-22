@@ -18,6 +18,8 @@ const orderSchema = new mongoose.Schema({
     status: {type: String, default: "Order Placed"},
     MOP: String,
     date: { type: Date, default: Date.now },
+    final_date: { type: Date, default: Date.now },
+    
   });
 
 const order = mongoose.model('order', orderSchema);
