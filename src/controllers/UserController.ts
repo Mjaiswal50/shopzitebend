@@ -59,9 +59,50 @@ export class UserController {
       });
     }
   }
-  static getAllProducts(req, res, next) {
+  static async getLoadedProducts(req,res,next){
+    let currentPage = req.query.currentPage;
+    let pageSize = req.query.pageSize;
+    let data = await Product.find({}).skip((currentPage-1)*pageSize).limit(pageSize);
+    const promises = data.map(async (prod: any) => {
+      const userID = req.userData.userID;
+      const user = await User.findOne({ _id: userID });
+
+      // wishlist
+      let wishlistProductIds = user.wishlist.map((data) => data.toString());
+      if (wishlistProductIds.includes(prod._id.toString())) {
+        prod.inWishlist = true;
+      }
+      // cart
+      let cartProducts = await Cart.findOne({ _id: user.cart });
+      let cartIdsArr = cartProducts.products.map((data) => {
+        return data.productId.toString();
+      });
+      if (cartIdsArr.includes(prod._id.toString())) {
+        prod.inCart = true;
+      }
+      return prod; // Return the modified product
+    });
+
+    // Wait for all promises to resolve before sending the response
+    Promise.all(promises)
+      .then((modifiedData) => {
+        res.send(modifiedData);
+      })
+      .catch((error) => {
+        console.error("Error processing promises:", error);
+        res.status(500).send({ error: "Internal Server Error" });
+      });
+  }
+
+  static async getProductsCount(req,res) {
+     let count =  await Product.countDocuments();
+     return res.send({data:count});
+  }
+  
+  static async getAllProducts(req, res, next) {
     Product.find({}, { __v: 0 })
       .then(async (data: any) => {
+        // console.log("🚀 ~ UserController ~ .then ~ data:", data)
         // Create an array of promises for each product
         const promises = data.map(async (prod: any) => {
           const userID = req.userData.userID;
