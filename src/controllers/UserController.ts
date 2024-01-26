@@ -59,10 +59,17 @@ export class UserController {
       });
     }
   }
-  static async getLoadedProducts(req,res,next){
+
+  static async getSearchItem(req, res, next) {
+    let searchvalue = req.query.searchvalue;
     let currentPage = req.query.currentPage;
     let pageSize = req.query.pageSize;
-    let data = await Product.find({}).skip((currentPage-1)*pageSize).limit(pageSize);
+   
+   
+    const data = await Product.find({
+      $or: [
+        { name: { $regex: searchvalue, $options: 'i' } }      ],
+    }).skip((currentPage-1)*pageSize).limit(pageSize);
     const promises = data.map(async (prod: any) => {
       const userID = req.userData.userID;
       const user = await User.findOne({ _id: userID });
@@ -93,10 +100,14 @@ export class UserController {
         res.status(500).send({ error: "Internal Server Error" });
       });
   }
-
-  static async getProductsCount(req,res) {
-     let count =  await Product.countDocuments();
-     return res.send({data:count});
+  static async getSearchCount(req,res,next) {
+    let searchvalue = req.query.searchvalue;
+    const data = await Product.find({
+      $or: [
+        { name: { $regex: searchvalue, $options: 'i' } }
+      ],
+    }).countDocuments();
+   res.send({data:data});
   }
   
   static async getAllProducts(req, res, next) {

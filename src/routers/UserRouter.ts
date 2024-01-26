@@ -40,8 +40,8 @@ export class UserRouter {
         this.router.get('/get/address', auth,UserController.getAddresses );
         this.router.get('/get/addressbyid/:addId', auth,UserController.getAddressesById );
         this.router.get('/get/orderhistory', auth,UserController.getOrders );
-        this.router.get('/get/loaded/products', auth, UserController.getLoadedProducts);
-        this.router.get('/get/products/count', auth, UserController.getProductsCount);
+        this.router.get('/get/search/item', auth, UserController.getSearchItem);
+        this.router.get('/get/search/count', auth, UserController.getSearchCount);
     }
 }
 
