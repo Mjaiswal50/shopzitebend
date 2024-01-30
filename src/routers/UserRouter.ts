@@ -22,13 +22,14 @@ export class UserRouter {
         this.router.patch('/delete/product/cart',auth, UserController.deleteFromCart);
         this.router.patch('/update/me',auth,UserController.updateMe)
         this.router.patch('/edit/address', auth, UserController.editAddress);
-        this.router.patch('/delete/address', auth, UserController.deleteAddress)
+        this.router.patch('/delete/address', auth, UserController.deleteAddress);
 
     }
     postRoutes() {
         this.router.post('/signup',UserController.signup);
         this.router.post('/create/address',auth,UserController.addAddress);
         this.router.post('/place/order',auth,UserController.placeOrder);
+        this.router.post('/post/rating', auth,UserController.postRating );
     }
     getRoutes() {
         this.router.get('/login',UserController.login);
@@ -42,6 +43,9 @@ export class UserRouter {
         this.router.get('/get/orderhistory', auth,UserController.getOrders );
         this.router.get('/get/search/item', auth, UserController.getSearchItem);
         this.router.get('/get/search/count', auth, UserController.getSearchCount);
+        this.router.get('/get/myrating/:prodId', auth,UserController.getMyRating );
+        this.router.get('/get/avg/product/rating/:prodId', auth,UserController.getAvgProductRating );
+        this.router.get('/get/isproduct/delivered/:prodId', auth,UserController.getIsProductDelivered );  
     }
 }
 

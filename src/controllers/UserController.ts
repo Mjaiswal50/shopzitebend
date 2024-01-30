@@ -4,7 +4,9 @@ import Product from "../models/Product";
 import Cart from "../models/Cart";
 import Address from "../models/Address";
 import Order from "../models/Order";
-
+import Rating from "../models/Rating";
+import {ObjectId} from 'mongodb'
+import mongoose from "mongoose";
 export class UserController {
   static async signup(req, res) {
     const user = new User({
@@ -433,5 +435,57 @@ export class UserController {
      return Order.findOne({_id: orderId});
    }));
    res.send(orderObjofArray); 
+  }
+
+  static async getMyRating(req,res,next) {
+    let userId = req.userData.userID;
+    let prodId = req.params.prodId;
+    let myrating = await Rating.findOne({userId:userId, prodId: prodId });
+    res.send({data: myrating});   
+  }
+  static async getAvgProductRating(req,res,next) {
+    let prodId = req.params.prodId;
+    let avgRateValue = await Rating.aggregate([
+      { $match: { prodId: new ObjectId(prodId) }},
+      { $group: {
+          _id: null,
+          averageRating: { $avg: "$rateValue" }
+        }
+      }
+    ])
+    res.send({data: avgRateValue[0]});  
+  }
+
+  static async getIsProductDelivered(req,res,next){
+    let prodId = req.params.prodId;
+    let user = await User.findOne({ _id : req.userData.userID});
+    let orderIdsArr = user.orders;
+    let newOrderIdsArr:any = await Promise.all(orderIdsArr.map( async (res: any) => {
+      let singleOrder = await Order.findOne({ _id: res._id});
+     return (singleOrder.status == "Delivered")? singleOrder : false;
+    }))
+    let deliveredOrdersArr = newOrderIdsArr.filter((res: any) => !!res);
+    let cartArr = deliveredOrdersArr?.map((res: any)=>{
+      return res.cart;
+    });
+    let resultArr = cartArr?.reduce((p,i)=>{
+      return [...i,...p];
+    },[]);
+    let resultIdsArr = resultArr?.map((res: any)=>{
+      return res._id.toString();
+    });
+    res.send({data:resultIdsArr?.includes(prodId.toString())})
+  }
+
+  static async postRating(req,res,next) {
+    let ratedValue = req.body.userRatedValue;
+    let prodId = req.body.productId;
+    let userId = req.userData.userID;
+    await Rating.findOneAndUpdate(
+      {  userId, prodId  },
+      { $set: { rateValue: ratedValue } },
+      { upsert: true , new: true }
+    );
+    res.send({msg: "updated successfully"});
   }
 }
