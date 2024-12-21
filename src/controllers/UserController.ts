@@ -39,6 +39,7 @@ export class UserController {
             email: user.email,
             userID: user._id,
             type: user.type,
+            name: user.first_name + ' ' +user.last_name
           },
           "secret"
         );
